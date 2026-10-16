@@ -1,0 +1,17 @@
+{
+  "name": "nths-harp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter nths-frontend dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.3.0",
+      "onFail": "download"
+    }
+  }
+}
