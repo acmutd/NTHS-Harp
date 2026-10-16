@@ -1,0 +1,35 @@
+# Stage 1: Build frontend
+FROM node:22.23.1-alpine AS frontend
+WORKDIR /app/client/portal
+
+COPY client/portal/package.json client/portal/package-lock.json ./
+RUN npm ci
+
+COPY client/portal/ ./
+
+ARG VITE_GOOGLE_AUTH_ENABLED=true
+ENV VITE_GOOGLE_AUTH_ENABLED=$VITE_GOOGLE_AUTH_ENABLED
+
+RUN npm run build
+
+# Stage 2: Build backend
+FROM golang:1.27.1 AS builder
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w -X main.version=$(cat version.txt)" -o /app/api ./cmd/api
+
+# Stage 3: Main container
+FROM scratch
+WORKDIR /app
+
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /app/api ./api
+COPY --from=frontend /app/client/portal/dist ./static
+COPY --from=frontend /app/client/portal/public/pwa-192x192.png ./client/portal/public/pwa-192x192.png
+
+EXPOSE 8080
+CMD ["./api"]
