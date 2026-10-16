@@ -1,33 +1,11 @@
-import { DepthGauge } from "@/components/DepthGauge";
-import { Footer } from "@/components/layout/Footer";
-import { Navbar } from "@/components/layout/Navbar";
-import { About } from "@/components/sections/About";
-import { Faq } from "@/components/sections/Faq";
-import { Hero } from "@/components/sections/Hero";
-import { Register } from "@/components/sections/Register";
-import { Route } from "@/components/sections/Route";
-import { Sponsor } from "@/components/sections/Sponsor";
-import { Stats } from "@/components/sections/Stats";
-import { Venue } from "@/components/sections/Venue";
-
-// One long dive: sections are ordered from the surface down to the seafloor,
-// and the background darkens along the depth ramp as you scroll.
+// Starting point for the landing page.
+// Already set up: Tailwind theme tokens and fonts (globals.css, layout.tsx),
+// the team's drawings in public/art, and event facts and copy in src/lib.
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <DepthGauge />
-      <main className="bg-linear-to-b from-shallow via-deep via-30% to-abyss">
-        <Hero />
-        <Stats />
-        <About />
-        <Route />
-        <Venue />
-        <Faq />
-        <Sponsor />
-        <Register />
-      </main>
-      <Footer />
-    </>
+    <main className="flex min-h-svh flex-col items-center justify-center gap-4 bg-linear-to-b from-shallow via-deep to-abyss px-4 text-center">
+      <h1 className="font-heading text-5xl sm:text-7xl">NTHS Hack</h1>
+      <p className="font-script text-3xl text-gold">Coming soon</p>
+    </main>
   );
 }
